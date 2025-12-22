@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int main(void) {
-    printf("Ola Mundo\n");
+    printf("GitHub\n");
     system("pause");
     return 0;
 }
