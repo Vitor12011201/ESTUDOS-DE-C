@@ -20,14 +20,23 @@ int main() {
         printf("O  JOGO DEU EMPATE, VAMOS PARA OS PENALTIS \n");
         srand(time(NULL));
         while (chutesPenalti < 5) {
-            int golsCorinthians;
-            int golsPalmeira;
+            int PenaltisCorinthians = 0;
+            int PenaltisPalmeiras = 0;
+            int golsCorinthians = rand() % 2;
+            int golsPalmeiras = rand() % 2;
             chutesPenalti ++;
-            if (golsCorinthians = srand() % 2)) {
-                printf("Gol do Corinthians");
-                golsCorinthians ++;
-            }else{
-                printf("O Corinthians perdeu o Penalti");
+            printf("O Corinthians vai bater o penalti e: ");
+            if (golsCorinthians == 1) {
+                printf("Gol do Corinthians \n");
+                PenaltisCorinthians ++;
+            }else {
+                printf("O Corinthians perdeu o Penalti \n");
+            }
+            printf("O Palmeiras vai bater o Penalti e: ");
+            if (golsPalmeiras == 1) {
+                printf("Gol do Palmeiras \n");
+            } else {
+                printf("O Palmeiras perdeu o penalti \n");
             }
         }
     }
