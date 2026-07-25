@@ -7224,13 +7224,22 @@ Esses modificadores especiais são conhecidos como **qualificadores de tipo** (*
 ---
 
 <details>
-<summary><b>🏷️ Qualificadores de Tipo (Seção 16.1)</b></summary>
+ <summary><b>🏷️ Qualificadores de Tipo (15.5.0 - 15.5.1)</b></summary>
+
+---
+
+[Codigos da Seções 16.1.0 - 16.1.4 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS)
+
+---
+
+<details>
+<summary><b>🛠️ Qualificadores de Tipo - Indrodução (Seção 16.1.0)</b></summary>
 <br>
 
 ---
 
 
-[Codigos da Seção 16.1 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS)
+[Codigos da Seção 16.1.0 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS/(SECAO-16-1-0)-INTRODUCAO)
 
 
 ---
@@ -7248,8 +7257,35 @@ Os qualificadores de tipo vão permitir que você declare valores constantes (im
 
 ---
 
+<details>
+ <summary><b>🧱 O Qualificador `const` (Seção 16.1.1)</b></summary>
+
+---
+
+[Codigos da Seção 16.1.1 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS/(SECAO-16-1-1)-O-QUALIFICADOR-CONST)
+
+---
+
+Este é, de longe, o qualificador de tipo mais comum que você vai encontrar. Ele significa que a variável é **constante**, e qualquer tentativa de modificar o seu valor resultará em um compilador extremamente zangado com você.
+
+```c
+const int x = 2;
+x = 4;  // SONS DO COMPILADOR PASSANDO MAL: não é possível atribuir a uma constante
+```
+
+- A regra é simples: você não pode alterar um valor `const`.
+
+Além de variáveis comuns, é muito frequente ver o `const` sendo usado para blindar parâmetros em assinaturas de funções:
+
+```c
+void foo(const int x) {
+printf("%d\n", x + 30);  // OK, a soma apenas lê o valor, não modifica "x"
+}
+```
 
 
 ---
+
+</details>
 
 </details>

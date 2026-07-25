@@ -7161,7 +7161,7 @@ However, sometimes it is indispensable. The golden rule is: try to avoid it to k
 ---
 
 <details>
- <summary><b>🔄 Types IV: Qualifiers and Specifiers (Section 15.0)</b></summary> 
+ <summary><b>🔄 Types IV: Qualifiers and Specifiers (Section 16.0)</b></summary> 
 <br>
 
 ---
@@ -7188,12 +7188,21 @@ These special modifiers are known as **type qualifiers** and **storage-class spe
 ---
 
 <details>
-<summary><b>🏷️ Type Qualifiers (Section 16.1)</b></summary>
+ <summary><b>🏷️ Type Qualifiers (15.5.0 - 15.5.1)</b></summary>
+
+---
+
+[Code for Sections 16.1.0 - 16.1.4 can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS)
+
+---
+
+<details>
+<summary><b>🛠️ Type Qualifiers - Introduction (Section 16.1.0)</b></summary>
 <br>
 
 ---
 
-[Section 16.1 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS)
+[Section 16.1.0 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS/(SECTION-16-1-0)-INTRODUCTION)
 
 ---
 
@@ -7210,10 +7219,35 @@ Type qualifiers will allow you to declare constant (immutable) values and, in ad
 
 ---
 
+<details>
+ <summary><b>🧱 The `const` Qualifier (Section 16.1.1)</b></summary>
 
+---
+
+[Section 16.1.1 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS/(SECTION-16-1-1)-THE-CONST-QUALIFIER)
+
+---
+
+This is, by far, the most common type qualifier you will encounter. It means the variable is **constant**, and any attempt to modify its value will result in a compiler that is extremely angry with you.
+
+```c
+const int x = 2;
+x = 4;  // SOUNDS OF THE COMPILER HAVING A MELTDOWN: cannot assign to a constant
+```
+
+- The rule is simple: you cannot change a `const` value.
+
+Besides plain variables, it is very common to see `const` being used to protect parameters in function signatures:
+
+```c
+void foo(const int x) {
+printf("%d\n", x + 30);  // OK, the addition only reads the value, it does not modify "x"
+}
+```
 
 ---
 
 </details>
 
+</details>
 
