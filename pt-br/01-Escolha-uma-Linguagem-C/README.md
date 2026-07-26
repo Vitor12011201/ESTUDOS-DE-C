@@ -7224,7 +7224,7 @@ Esses modificadores especiais são conhecidos como **qualificadores de tipo** (*
 ---
 
 <details>
- <summary><b>🏷️ Qualificadores de Tipo (15.5.0 - 15.5.1)</b></summary>
+ <summary><b>🏷️ Qualificadores de Tipo (16.1.0 - 16.1.4)</b></summary>
 
 ---
 
@@ -7282,6 +7282,80 @@ void foo(const int x) {
 printf("%d\n", x + 30);  // OK, a soma apenas lê o valor, não modifica "x"
 }
 ```
+
+---
+
+#### 🔒 O `const` e os Ponteiros
+
+Essa parte costuma dar um nó na cabeça de muita gente, porque o uso do `const` com ponteiros tem duas aplicações com significados completamente diferentes, dependendo de onde a palavra-chave é posicionada.
+
+#### 1. Travando o valor apontado (Ponteiro para uma Constante)
+Podemos configurar o ponteiro para que você não consiga alterar **a coisa para a qual ele aponta**. Para isso, colocamos o `const` logo no início da declaração, junto ao nome do tipo (antes do asterisco `*`).
+
+```c
+int x[] = {10, 20};
+const int *p = x; 
+
+p++;      // Tudo certo! Podemos alterar o ponteiro em si sem problemas.
+*p = 30;  // Erro de compilação! Não podemos alterar o conteúdo apontado.
+```
+
+- De forma um pouco confusa, o C considera as duas declarações abaixo como exatamente equivalentes:
+
+```c
+const int *p;  // Não pode modificar o alvo apontado.
+int const *p;  // Idem. Funciona exatamente como a linha anterior.
+```
+
+---
+
+#### 2. Travando o ponteiro em si (Ponteiro Constante)
+Ótimo, então não podemos alterar o alvo, mas podemos mover o ponteiro. E se quisermos o oposto? Queremos ter permissão para alterar o valor na memória, mas proibir que o ponteiro aponte para outro lugar?
+
+```c
+int x = 10;
+int *const p = &x; 
+
+*p = 20;  // Tudo certo! Alteramos o valor de "x" para 20.
+p++;      // Erro de compilação! Não podemos mover "p" com aritmética de ponteiros.
+```
+
+---
+
+#### 3. Travando ambos
+Você também pode aplicar as duas restrições simultaneamente, travando tanto o endereço de memória quanto o valor guardado nele:
+
+```c
+const int *const p;  // Não pode modificar "p" e nem "*p"!
+```
+
+---
+
+#### 4. Múltiplos Níveis de Indireção
+Se você estiver lidando com ponteiros duplos (ou maiores), você deve aplicar o const nos níveis apropriados. Só porque um ponteiro principal é `const`, não significa que o ponteiro para o qual ele aponta também deva ser. Você pode configurar as restrições camada por camada:
+
+```c
+char **p;
+p++;     // OK!
+(*p)++;  // OK!
+
+char **const p;
+p++;     // Erro! (O ponteiro principal está travado)
+(*p)++;  // OK! (O ponteiro secundário está livre)
+
+char *const *p;
+p++;     // OK! (O ponteiro principal está livre)
+(*p)++;  // Erro! (O ponteiro secundário está travado)
+
+char *const *const p;
+p++;     // Erro!
+(*p)++;  // Erro!
+```
+
+</details>
+
+---
+
 
 
 ---

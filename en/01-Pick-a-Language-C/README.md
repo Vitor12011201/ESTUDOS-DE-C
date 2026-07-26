@@ -7247,6 +7247,77 @@ printf("%d\n", x + 30);  // OK, the addition only reads the value, it does not m
 
 ---
 
+#### 🔒 `const` and Pointers
+
+This part often trips up many people, because the use of `const` with pointers has two applications with completely different meanings, depending on where the keyword is placed.
+
+---
+
+#### 1. Locking the pointed value (Pointer to a Constant)
+
+We can configure the pointer so that you cannot change **the thing it points to**. To do this, we place `const` at the very beginning of the declaration, along with the type name (before the asterisk `*`).
+
+```c
+int x[] = {10, 20};
+const int *p = x;
+
+p++;      // All good! We can change the pointer itself without problems.
+*p = 30;  // Compilation error! We cannot change the pointed content.
+```
+
+---
+
+#### 2. Locking the pointer itself (Constant Pointer)
+Great, so we cannot change the target, but we can move the pointer. What if we want the opposite? We want to be allowed to change the value in memory, but forbid the pointer from pointing elsewhere?
+
+```c
+int x = 10;
+int *const p = &x;
+
+*p = 20;  // All good! We changed the value of "x" to 20.
+p++;      // Compilation error! We cannot move "p" with pointer arithmetic.
+```
+
+---
+
+#### 3. Locking both
+You can also apply both restrictions simultaneously, locking both the memory address and the value stored in it:
+
+```c
+const int *const p;  // Cannot modify "p" nor "*p"!
+```
+
+---
+
+#### 4. Multiple Levels of Indirection
+If you are dealing with double (or higher) pointers, you must apply `const` at the appropriate levels. Just because a top-level pointer is `const`, it does not mean that the pointer it points to should also be. You can set the restrictions layer by layer:
+
+```c
+char **p;
+p++;     // OK!
+(*p)++;  // OK!
+
+char **const p;
+p++;     // Error! (The top-level pointer is locked)
+(*p)++;  // OK! (The second-level pointer is free)
+
+char *const *p;
+p++;     // OK! (The top-level pointer is free)
+(*p)++;  // Error! (The second-level pointer is locked)
+
+char *const *const p;
+p++;     // Error!
+(*p)++;  // Error!
+```
+
+</details>
+
+---
+
+
+
+---
+
 </details>
 
 </details>
