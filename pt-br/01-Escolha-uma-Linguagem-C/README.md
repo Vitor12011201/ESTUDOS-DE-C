@@ -7352,6 +7352,45 @@ p++;     // Erro!
 (*p)++;  // Erro!
 ```
 
+---
+
+#### ✔️ Correção de `const` 
+
+Mais uma coisa que preciso mencionar é que o compilador vai disparar um aviso (*warning*) se você tentar fazer algo assim:
+
+```c
+const int x = 20;
+int *p = &x;
+```
+
+Ele vai cuspir uma mensagem dizendo algo na linha de:
+`initialization discards 'const' qualifier from pointer type target`
+(a inicialização descarta o qualificador 'const' do alvo do tipo ponteiro).
+
+- O que está acontecendo aqui?
+
+Bem, precisamos olhar para os tipos em ambos os lados da atribuição:
+
+```c
+const int x = 20;
+    int *p = &x;
+//    ^       ^
+//    |       |
+//  int*    const int*
+```
+
+O compilador está nos avisando que o valor do lado direito da atribuição possui a proteção `const`, mas a variável que vai recebê-lo do lado esquerdo não possui. Com esse aviso, o compilador está deixando claro que está descartando a "constância" (a proteção de leitura) da expressão à direita.
+
+Ou seja, nós até podemos tentar forçar a barra e escrever o código abaixo, mas ele está simplesmente errado. O compilador vai reclamar e isso gera o temido **Comportamento Indefinido (Undefined Behavior)**:
+
+```c
+const int x = 20;
+int *p = &x;
+
+*p = 40;  // Comportamento Indefinido -- talvez modifique "x", talvez não!
+printf("%d\n", x);  // 40, se você der muita sorte
+```
+
 </details>
 
 ---

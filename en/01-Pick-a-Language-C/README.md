@@ -7310,6 +7310,44 @@ p++;     // Error!
 (*p)++;  // Error!
 ```
 
+---
+
+#### ✔️ `const` Correction
+
+One more thing I need to mention is that the compiler will issue a warning if you try to do something like this:
+
+```c
+const int x = 20;
+int *p = &x;
+```
+
+It will spit out a message saying something along the lines of:
+`initialization discards 'const' qualifier from pointer type target`
+
+- What is happening here?
+
+Well, we need to look at the types on both sides of the assignment:
+
+```c
+const int x = 20;
+    int *p = &x;
+//    ^       ^
+//    |       |
+//  int*    const int*
+```
+
+The compiler is warning us that the value on the right side of the assignment has the `const` protection, but the variable that will receive it on the left side does not. With this warning, the compiler is making it clear that it is discarding the "constness" (the read‑only protection) of the expression on the right.
+
+In other words, we may even try to force it and write the code below, but it is simply wrong. The compiler will complain, and this generates the dreaded **Undefined Behavior**:
+
+```c
+const int x = 20;
+int *p = &x;
+
+*p = 40;  // Undefined Behavior -- might modify "x", might not!
+printf("%d\n", x);  // 40, if you're very lucky
+```
+
 </details>
 
 ---
