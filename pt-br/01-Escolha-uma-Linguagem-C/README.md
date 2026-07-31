@@ -7395,7 +7395,73 @@ printf("%d\n", x);  // 40, se você der muita sorte
 
 ---
 
+<details>
+ <summary><b>🚫 O Qualificador `restrict` (Seção 16.1.2)</b></summary>
 
+---
+
+[Codigos da Seção 16.1.2 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS/(SECAO-16-1-2)-O-QUALIFICADOR-RESTRICT)
+
+---
+
+**Resumo da ópera (TL;DR):** Você nunca *precisa* usar isso e pode simplesmente ignorá-lo sempre que bater o olho nele. Se você usar corretamente, provavelmente ganhará alguma performance. Se usar incorretamente, ganhará um belo Comportamento Indefinido (*Undefined Behavior*).
+
+O `restrict` é uma dica para o compilador de que um pedaço específico de memória será acessado **apenas por um único ponteiro** e por nenhum outro. Ou seja, você está garantindo que não haverá *aliasing* (múltiplos ponteiros apontando para o mesmo lugar) do objeto referenciado pelo ponteiro restrito.
+
+Se um desenvolvedor declara um ponteiro como `restrict` e depois acessa o objeto para o qual ele aponta de outra maneira (por exemplo, usando um segundo ponteiro), o comportamento do programa passa a ser indefinido.
+
+Basicamente, você está dizendo ao C: *"Ei — eu garanto que este único ponteiro é a única forma pela qual vou acessar esta memória. Se eu estiver mentindo, sinta-se à vontade para jogar um Comportamento Indefinido na minha cara."*
+
+O compilador usa essa informação para realizar certas otimizações agressivas. Por exemplo, se você estiver desreferenciando um ponteiro `restrict` repetidamente dentro de um loop, o C pode decidir fazer um cache do resultado em um registrador rápido da CPU e só gravar o resultado final na memória principal quando o loop terminar. Se qualquer outro ponteiro se referisse àquela mesma memória e a acessasse durante o loop, os resultados ficariam completamente dessincronizados.
+
+*(Nota: o `restrict` não tem efeito se o objeto apontado nunca for modificado/sobrescrito. Toda a sua utilidade gira em torno de otimizações envolvendo escritas na memória).*
+
+Vamos escrever uma função para trocar (*swap*) o valor de duas variáveis. Usaremos a palavra-chave `restrict` para assegurar ao C que nunca passaremos ponteiros apontando para a mesma coisa. Em seguida, vamos estragar tudo e tentar passar exatamente isso:
+
+```c
+// Prometemos ao compilador: 'a' e 'b' nunca apontarão para a mesma memória
+void swap(int *restrict a, int *restrict b) {
+    int t;
+    t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int main(void) {
+    int x = 10, y = 20;
+
+    swap(&x, &y);  // OK! "a" e "b" lá em cima apontam para coisas diferentes.
+    swap(&x, &x);  // Comportamento Indefinido! "a" e "b" agora apontam para a mesma coisa.
+}
+```
+
+Se retirássemos a palavra-chave `restrict` do código acima, ambas as chamadas funcionariam com total segurança. No entanto, o compilador poderia não conseguir otimizar a função tão bem.
+
+#### Regras de Escopo:
+O restrict possui escopo de bloco. Isso significa que a restrição só dura durante o bloco em que foi declarada. Se estiver na lista de parâmetros de uma função, a restrição vale por todo o escopo daquela função.
+
+- **Arrays:** Se o ponteiro restrito apontar para um array, a restrição se aplica aos objetos individuais do array. Outros ponteiros podem ler e escrever no mesmo array, desde que não leiam ou escrevam nos mesmos elementos que o ponteiro restrito.
+
+- **Escopo de Arquivo:** Se declarado fora de qualquer função (escopo global do arquivo), a restrição cobre o programa inteiro.
+
+Você provavelmente verá isso com frequência em funções da biblioteca padrão, como o `printf()`:
+
+```c
+int printf(const char * restrict format, ...);
+```
+
+Novamente, isso é apenas o C dizendo ao compilador que, dentro da função `printf()`, haverá apenas um ponteiro fazendo referência a qualquer parte daquela string de formatação.
+
+**Uma última nota:** Se, por algum motivo, você estiver usando a notação de array nos parâmetros da sua função em vez da notação de ponteiro, você pode usar o `restrict` da seguinte forma:
+
+```c
+void foo(int p[restrict])     // Sem tamanho definido
+void foo(int p[restrict 10])  // Ou com um tamanho definido
+```
+
+Mas a notação de ponteiro (com o `*`) costuma ser bem mais comum no dia a dia.
+
+</details>
 
 ---
 

@@ -7352,7 +7352,74 @@ printf("%d\n", x);  // 40, if you're very lucky
 
 ---
 
+<details>
+ <summary><b>🚫 The `restrict` Qualifier (Section 16.1.2)</b></summary>
 
+---
+
+[Section 16.1.2 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS/(SECTION-16-1-2)-THE-RESTRICT-QUALIFIER)
+
+---
+
+**TL;DR:** You never *need* to use this and you can simply ignore it whenever you come across it. If you use it correctly, you'll probably gain some performance. If you use it incorrectly, you'll get a nice dose of Undefined Behavior.
+
+`restrict` is a hint to the compiler that a specific piece of memory will be accessed **only by a single pointer** and by no other. In other words, you are guaranteeing that there will be no *aliasing* (multiple pointers pointing to the same location) of the object referenced by the restricted pointer.
+
+If a developer declares a pointer as `restrict` and then accesses the object it points to in another way (e.g., using a second pointer), the program's behavior becomes undefined.
+
+Basically, you are telling C: *"Hey — I guarantee that this single pointer is the only way I will access this memory. If I'm lying, feel free to throw Undefined Behavior in my face."*
+
+The compiler uses this information to perform certain aggressive optimizations. For example, if you are dereferencing a `restrict` pointer repeatedly inside a loop, C may decide to cache the result in a fast CPU register and only write the final result back to main memory when the loop ends. If any other pointer referred to that same memory and accessed it during the loop, the results would become completely out of sync.
+
+*(Note: `restrict` has no effect if the pointed object is never modified/overwritten. Its entire usefulness revolves around optimizations involving memory writes).*
+
+Let's write a function to swap the value of two variables. We'll use the `restrict` keyword to assure C that we will never pass pointers pointing to the same thing. Then we'll mess it up and try to pass exactly that:
+
+```c
+// We promise the compiler: 'a' and 'b' will never point to the same memory
+void swap(int *restrict a, int *restrict b) {
+    int t;
+    t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int main(void) {
+    int x = 10, y = 20;
+
+    swap(&x, &y);  // OK! "a" and "b" up there point to different things.
+    swap(&x, &x);  // Undefined Behavior! "a" and "b" now point to the same thing.
+}
+```
+
+If we removed the `restrict` keyword from the code above, both calls would work safely. However, the compiler might not be able to optimize the function as well.
+
+#### Scope Rules:
+
+`restrict` has block scope. This means the restriction only lasts for the block in which it was declared. If it is in a function's parameter list, the restriction applies for the entire scope of that function.
+
+- **Arrays:** If the restricted pointer points to an array, the restriction applies to the individual objects of the array. Other pointers can read and write to the same array, as long as they do not read or write to the same elements as the restricted pointer.
+
+- **File Scope:** If declared outside any function (global file scope), the restriction covers the entire program.
+
+You will probably see this frequently in standard library functions, like `printf()`:
+
+```c
+int printf(const char * restrict format, ...);
+```
+
+Again, this is just C telling the compiler that, inside `printf()`, there will be only one pointer referencing any part of that format string.
+
+**One final note:** If, for some reason, you are using array notation in your function parameters instead of pointer notation, you can use restrict as follows:
+
+```c
+void foo(int p[restrict])     // Without a defined size
+void foo(int p[restrict 10])  // Or with a defined size
+```
+
+But pointer notation (with the `*`) is usually much more common in everyday practice.
+
+</details>
 
 ---
 
