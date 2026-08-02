@@ -7465,6 +7465,33 @@ Mas a notação de ponteiro (com o `*`) costuma ser bem mais comum no dia a dia.
 
 ---
 
+<details>
+ <summary><b>⚡ O Qualificador `volatile` (Seção 16.1.3)</b></summary>
+
+---
+
+[Codigos da Seção 16.1.3 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS/(SECAO-16-1-3)-O-QUALIFICADOR-VOLATILE)
+
+---
+
+É improvável que você veja ou precise usar isso no dia a dia da programação de software padrão. Você só vai esbarrar no `volatile` se estiver lidando **diretamente com hardware**.
+
+A palavra-chave `volatile` avisa ao compilador que um determinado valor na memória pode mudar "pelas suas costas", e por isso ele deve ser lido da memória real *toda santa vez* que for requisitado.
+
+Um exemplo clássico é quando o código está monitorando um endereço de memória que é atualizado continuamente nos bastidores pelo próprio hardware — como um *timer* da placa-mãe ou um registrador de leitura de um sensor.
+
+Se o compilador decidir otimizar esse processo e guardar o valor em um registrador rápido da CPU por um tempo prolongado, o componente físico vai atualizar o valor na memória, mas o seu programa não vai ficar sabendo. O seu código ficará lendo o valor antigo e "congelado" que ficou preso no registrador.
+
+Ao declarar algo como `volatile`, você está dizendo ao compilador: *"Ei, a coisa para a qual isso aponta pode mudar a qualquer instante por motivos totalmente alheios ao código deste programa. Desligue as otimizações de cache para esta variável!"*
+
+```c
+volatile int *p;
+```
+
+</details>
+
+---
+
 </details>
 
 </details>

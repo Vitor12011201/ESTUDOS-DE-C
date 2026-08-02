@@ -7423,6 +7423,33 @@ But pointer notation (with the `*`) is usually much more common in everyday prac
 
 ---
 
+<details>
+ <summary><b>⚡ The `volatile` Qualifier (Section 16.1.3)</b></summary>
+
+---
+
+[Section 16.1.3 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS/(SECTION-16-1-3)-THE-VOLATILE-QUALIFIER)
+
+---
+
+It is unlikely that you will see or need to use this in everyday standard software programming. You will only run into `volatile` if you are dealing **directly with hardware**.
+
+The `volatile` keyword warns the compiler that a given value in memory may change "behind its back", and therefore it must be read from actual memory *every single time* it is requested.
+
+A classic example is when the code is monitoring a memory address that is being continuously updated behind the scenes by the hardware itself — such as a motherboard *timer* or a sensor read register.
+
+If the compiler decides to optimize this process and store the value in a fast CPU register for an extended period, the physical component will update the value in memory, but your program will not find out. Your code will keep reading the old, "frozen" value that got stuck in the register.
+
+By declaring something as `volatile`, you are telling the compiler: *"Hey, the thing this points to can change at any moment for reasons completely unrelated to the code in this program. Turn off cache optimizations for this variable!"*
+
+```c
+volatile int *p;
+```
+
+</details>
+
+---
+
 </details>
 
 </details>
