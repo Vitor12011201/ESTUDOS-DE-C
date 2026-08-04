@@ -7450,6 +7450,28 @@ volatile int *p;
 
 ---
 
+<details>
+ <summary><b> ⚛️ The `_Atomic` Qualifier (Section 16.1.4)</b></summary>
+
+---
+
+[Section 16.1.4 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-1)-TYPE-QUALIFIERS/(SECTION-16-1-4)-THE-_ATOMIC-QUALIFIER)
+
+---
+
+This is an optional feature of the C language that we will discuss in more depth in the chapter dedicated to *Atomics* (Atomic Operations).
+
+---
+
+> 💡 Study Insight: A Preview on Concurrency
+> Although the book leaves the details for later, it is worth already having the concept in mind: `_Atomic` shines in multithreaded programming and high‑performance systems.
+> In software that deals with massive parallel processing — such as network servers handling multiple connections or systems that perform real‑time video capture and encoding — several *threads* often share the same control variables (for example, a counter of processed *frames*). If two threads try to add `+1` to this counter at the exact same nanosecond, the CPU may get confused and register only one of the additions, corrupting the data (what we call a *Race Condition*).
+> The `_Atomic` qualifier tells the compiler to use special CPU instructions that ensure that reading and writing to that variable are **indivisible** (atomic). When one thread starts changing the value, the hardware guarantees that no other thread can touch the variable until the operation is 100% complete. This is the foundation for creating ultra‑fast algorithms that do not depend on the slow *locks* of the operating system.
+
+</details>
+
+---
+
 </details>
 
 </details>

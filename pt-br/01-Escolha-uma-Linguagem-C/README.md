@@ -7490,6 +7490,26 @@ volatile int *p;
 
 </details>
 
+<details>
+ <summary><b> ⚛️ O Qualificador `_Atomic` (Seção 16.1.4)</b></summary>
+
+---
+
+[Codigos da Seção 16.1.4 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-1)-QUALIFICADORES-DE-TIPOS/(SECAO-16-1-4)-O-QUALIFICADOR-_Atomic)
+
+---
+
+Este é um recurso opcional da linguagem C sobre o qual falaremos com mais profundidade no capítulo dedicado a *Atomics* (Operações Atômicas).
+
+---
+
+> 💡 Insight de Estudo: Uma Prévia sobre Concorrência
+> Embora o livro deixe os detalhes para depois, vale a pena já ter o conceito em mente: o `_Atomic` brilha na programação multithread e em sistemas de alta performance.
+> Em softwares que lidam com processamento massivo em paralelo — como servidores de rede lidando com múltiplas conexões ou sistemas que fazem captura e encoding de vídeo em tempo real —, várias *threads* costumam compartilhar as mesmas variáveis de controle (por exemplo, um contador de *frames* processados). Se duas threads tentarem somar `+1` nesse contador no exato mesmo nanossegundo, a CPU pode se atrapalhar e registrar apenas uma das somas, corrompendo os dados (o que chamamos de *Race Condition*).
+> O qualificador `_Atomic` diz ao compilador para usar instruções especiais da CPU que garantem que a leitura e a escrita daquela variável sejam **indivisíveis** (atômicas). Quando uma thread começa a alterar o valor, o hardware garante que nenhuma outra thread possa encostar na variável até que a operação seja 100% concluída. É a base para criar algoritmos ultra-rápidos que não dependem dos lentos *locks* (travas) do sistema operacional.
+
+</details>
+
 ---
 
 </details>
