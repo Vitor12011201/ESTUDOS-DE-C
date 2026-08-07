@@ -7510,6 +7510,47 @@ Este é um recurso opcional da linguagem C sobre o qual falaremos com mais profu
 
 </details>
 
+</details>
+
+---
+
+<details>
+ <summary><b>🗄️ Especificadores de Classe de Armazenamento (16.2.0 - 16.2.5)</b></summary>
+
+---
+
+[Codigos da Seções 16.2.0 - 16.2.5 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO)
+
+---
+
+<details>
+<summary><b>🛠️ Especificadores de Classe de Armazenamento - Introdução (Seção 16.2.0)</b></summary>
+<br>
+
+---
+
+
+[Codigos da Seção 16.2.0 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-0)-INTRODUCAO)
+
+
+---
+
+Os especificadores de classe de armazenamento são semelhantes aos qualificadores de tipo (*type qualifiers*). Eles servem para fornecer ao compilador informações adicionais e cruciais sobre a natureza e o comportamento de uma variável por debaixo dos panos.
+
+---
+
+> 💡 Insight de Estudo: Qual é a diferença na prática?
+> Para não confundir Qualificadores (que acabamos de concluir) com Especificadores (que começaremos agora), tenha em mente a seguinte regra prática:
+> * **Qualificadores** (`const`, `volatile`, `restrict`): Ditam as regras de **ACESSO**. *(Posso sobrescrever este valor? O hardware pode alterar isso sozinho? Tem mais de um ponteiro olhando para esse endereço?)*.
+> * **Especificadores** (`auto`, `static`, `extern`, `register`): Ditam a **HOSPEDAGEM**, o **TEMPO DE VIDA** (*lifetime*) e a **VISIBILIDADE** (*scope*).
+> Enquanto os qualificadores protegem a integridade do dado, os especificadores organizam a arquitetura da memória do seu programa. É com os especificadores que você decide se uma variável vai nascer e morrer rapidamente na *Stack* a cada chamada de função, se ela vai persistir na RAM do início ao fim do programa, se ela deve tentar se hospedar direto em um registrador rápido da CPU, ou se ela precisa ser enxergada por outros arquivos `.c` do seu projeto.
+
+</details>
+
+---
+
+
+
 ---
 
 </details>

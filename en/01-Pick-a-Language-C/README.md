@@ -7151,6 +7151,8 @@ However, sometimes it is indispensable. The golden rule is: try to avoid it to k
 
 </details>
 
+---
+
 <details>
 <summary><b>🔹Day 16: Types IV: Qualifiers and Specifiers</b></summary>
 
@@ -7470,9 +7472,47 @@ This is an optional feature of the C language that we will discuss in more depth
 
 </details>
 
+</details>
+
+---
+
+<details>
+ <summary><b>🗄️ Storage-Class Specifiers (16.2.0 - 16.2.5)</b></summary>
+
+---
+
+[Code for Sections 16.2.0 - 16.2.5 can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS)
+
+---
+
+<details>
+<summary><b>🛠️ Storage-Class Specifiers - Introduction (Section 16.2.0)</b></summary>
+<br>
+
+---
+
+[Section 16.2.0 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS/(SECTION-16-2-0)-INTRODUCTION)
+
+---
+
+Storage-class specifiers are similar to type qualifiers. They serve to provide the compiler with additional and crucial information about the nature and behavior of a variable behind the scenes.
+
+---
+
+> 💡 Study Insight: What is the practical difference?
+> To avoid confusing Qualifiers (which we have just covered) with Specifiers (which we are about to start), keep the following practical rule in mind:
+> * **Qualifiers** (`const`, `volatile`, `restrict`): Dictate the **ACCESS** rules. *(Can I overwrite this value? Can the hardware change this by itself? Is there more than one pointer looking at this address?)*
+> * **Specifiers** (`auto`, `static`, `extern`, `register`): Dictate the **HOSTING**, **LIFETIME**, and **VISIBILITY** (scope).
+> While qualifiers protect data integrity, specifiers organize your program's memory architecture. It is with specifiers that you decide whether a variable will be born and die quickly on the *Stack* with each function call, whether it will persist in RAM from the beginning to the end of the program, whether it should try to host itself directly in a fast CPU register, or whether it needs to be visible to other `.c` files in your project.
+
+</details>
+
+---
+
+
+
 ---
 
 </details>
 
 </details>
-
