@@ -7509,6 +7509,36 @@ Storage-class specifiers are similar to type qualifiers. They serve to provide t
 
 ---
 
+<details>
+ <summary><b>♻️ The `auto` Specifier (Section 16.2.1)</b></summary>
+<br>
+
+---
+
+[Section 16.2.1 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS/(SECTION-16-2-1)-THE-AUTO-SPECIFIER)
+
+---
+
+You will almost never see this keyword in the wild, since `auto` is the default behavior for variables declared within a block scope (such as inside functions or loops). It is always implicit.
+
+These two snippets are exactly the same thing:
+```c
+{
+    int a;         // 'auto' is the default...
+    auto int a;    // ...so writing this is completely redundant
+}
+```
+
+The `auto` keyword indicates that this object has **automatic storage duration**. That is, it exists only within the scope where it was defined and is automatically deallocated (destroyed) as soon as the program flow leaves that scope.
+
+A dangerous trap regarding automatic variables is that their value is indeterminate until you explicitly initialize them. We often say that they are **born filled with "random" or "garbage" data**.
+
+**Always initialize all automatic variables before using them!**
+
+</details>
+
+---
+
 
 
 ---

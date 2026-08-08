@@ -7549,6 +7549,36 @@ Os especificadores de classe de armazenamento são semelhantes aos qualificadore
 
 ---
 
+<details>
+ <summary><b>♻️ O Especificador `auto` (Seção 16.2.1)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 16.2.1 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-1)-O-ESPECIFICADOR-AUTO)
+
+---
+
+Você quase nunca vai ver essa palavra-chave na natureza, já que `auto` é o comportamento padrão para variáveis declaradas dentro de um escopo de bloco (como dentro de funções ou loops). Ele está sempre implícito.
+
+Estes dois trechos são exatamente a mesma coisa:
+```c
+{
+    int a;         // 'auto' é o padrão...
+    auto int a;    // ...então escrever isso é completamente redundante
+}
+```
+
+A palavra-chave `auto` indica que este objeto tem duração de **armazenamento automática**. Ou seja, ele existe apenas no escopo em que foi definido e é automaticamente desalocado (destruído) assim que o fluxo do programa sai desse escopo.
+
+Uma pegadinha perigosa sobre variáveis automáticas é que o valor delas é indeterminado até que você as inicialize explicitamente. Costumamos dizer que elas **nascem cheias de dados "aleatórios" ou "lixo de memória"** (garbage),
+
+**Sempre inicialize todas as variáveis automáticas antes de usá-las!**
+
+</details>
+
+---
+
 
 
 ---
