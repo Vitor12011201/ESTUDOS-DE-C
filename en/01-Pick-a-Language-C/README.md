@@ -7539,6 +7539,77 @@ A dangerous trap regarding automatic variables is that their value is indetermin
 
 ---
 
+<details>
+ <summary><b>⚓ The `static` Specifier (Section 16.2.2)</b></summary>
+<br>
+
+---
+
+[Section 16.2.2 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS/(SECTION-16-2-2)-THE-STATIC-SPECIFIER)
+
+---
+
+This keyword has **two completely different meanings**, depending on where the variable is declared: whether it is in file scope (global) or in block scope (local).
+
+Let's start by analyzing its behavior inside **block scope**.
+
+---
+
+#### 📦 static in Block Scope
+
+In this case, what we are telling the compiler is basically this: "I want there to be only a single instance of this variable in memory, shared across all calls to the function."
+
+This means its value will **persist** from one execution to another.
+
+Furthermore, a `static` variable in block scope with an initializer will only be initialized once, at the moment the program is loaded into memory, and not every time the function is executed.
+
+See the example in practice:
+
+```c
+#include <stdio.h>
+
+void counter(void) {
+    static int count = 1;  // This initialization happens only once!
+    printf("This function was called %d time(s)\n", count);
+    count++;
+}
+
+int main(void) {
+    counter();  // "This function was called 1 time(s)"
+    counter();  // "This function was called 2 time(s)"
+    counter();  // "This function was called 3 time(s)"
+    counter();  // "This function was called 4 time(s)"
+}
+```
+- Notice how the value of the `count` variable is preserved across calls?
+
+#### ⚠️ Points of Attention:
+
+- **Default Zero Value:** `static` variables in block scope are initialized to `0` by default if you do not assign an initial value.
+
+```c
+static int foo;      // The default initial value is 0
+static int foo = 0;  // Therefore, assigning 0 is redundant
+```
+
+- **Concurrency (Multithreading):** If you are writing multithreaded programs, be very careful: since the `static` variable is shared, multiple threads may try to modify the same memory address at the same time, causing race conditions.
+
+---
+
+#### 🌐 static in File Scope
+
+When we leave the inside of functions and declare `static` in file scope (outside any code block), its meaning changes.
+
+Variables in file scope already persist in memory throughout the entire program execution by default. Therefore, persistence already exists naturally.
+
+Instead, `static` in this context means that this **variable (or function) will not be visible outside this specific source file** (`.c`). It is like a "global" variable, but restricted and private only to the file where it was declared (Internal Linkage).
+
+We will see more about this in the sections on compiling projects with multiple source files.
+
+</details>
+
+---
+
 
 
 ---

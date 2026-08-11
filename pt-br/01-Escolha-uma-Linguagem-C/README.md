@@ -7579,6 +7579,77 @@ Uma pegadinha perigosa sobre variáveis automáticas é que o valor delas é ind
 
 ---
 
+<details>
+ <summary><b>⚓ O Especificador `static` (Seção 16.2.2)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 16.2.2 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-2)-O-ESPECIFICADOR-STATIC)
+
+---
+
+Esta palavra-chave possui **dois significados completamente diferentes**, dependendo de onde a variável é declarada: se ela está em escopo de arquivo (*file scope* / global) ou em escopo de bloco (*block scope* / local).
+
+Vamos começar analisando o comportamento dentro do **escopo de bloco**.
+
+---
+
+#### 📦 static em Escopo de Bloco
+
+Neste caso, o que estamos dizendo ao compilador é basicamente o seguinte: "Eu quero que exista apenas uma única instância desta variável na memória, compartilhada entre todas as chamadas da função."
+
+Isso significa que o seu valor vai **persistir** entre uma execução e outra.
+
+Além disso, uma variável `static` em escopo de bloco com uma inicialização só será inicializada uma única vez no momento em que o programa é carregado na memória, e não a cada vez que a função é executada.
+
+Veja o exemplo na prática:
+
+```c
+#include <stdio.h>
+
+void counter(void) {
+    static int count = 1;  // Esta inicialização ocorre apenas uma vez!
+    printf("Esta funcao foi chamada %d vez(es)\n", count);
+    count++;
+}
+
+int main(void) {
+    counter();  // "Esta funcao foi chamada 1 vez(es)"
+    counter();  // "Esta funcao foi chamada 2 vez(es)"
+    counter();  // "Esta funcao foi chamada 3 vez(es)"
+    counter();  // "Esta funcao foi chamada 4 vez(es)"
+}
+```
+- Percebeu como o valor da variável `count` é preservado entre as chamadas?
+
+#### ⚠️ Pontos de Atenção:
+
+- **Valor Padrão Zero:** Variáveis `static` em escopo de bloco são inicializadas com o valor `0` por padrão caso você não atribua um valor inicial.
+
+```c
+static int foo;      // O valor inicial padrão é 0
+static int foo = 0;  // Portanto, a atribuição do 0 é redundante
+```
+
+- **Concorrência (Multithreading):** Se você estiver escrevendo programas com múltiplas threads, tome muito cuidado: como a variável `static` é compartilhada, várias threads podem tentar alterar o mesmo endereço de memória ao mesmo tempo, causando condições de corrida (Race Conditions).
+
+---
+
+#### 🌐 static em Escopo de Arquivo
+
+Quando saímos de dentro das funções e declaramos o `static` em escopo de arquivo (fora de qualquer bloco de código), o seu significado muda de figura.
+
+Variáveis no escopo de arquivo já persistem na memória durante toda a execução do programa por padrão. Portanto, a persistência já existe naturalmente.
+
+Em vez disso, o `static` nesse contexto significa que **esta variável (ou função) não estará visível fora deste arquivo fonte específico** (`.c`). É como se fosse uma variável "global", mas restrita e privada apenas para o arquivo onde foi declarada (Internal Linkage).
+
+Veremos mais sobre isso nas seções sobre compilação de projetos com múltiplos arquivos fonte.
+
+</details>
+
+---
+
 
 
 ---
