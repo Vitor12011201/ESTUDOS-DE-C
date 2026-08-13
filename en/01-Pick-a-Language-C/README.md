@@ -7610,6 +7610,73 @@ We will see more about this in the sections on compiling projects with multiple 
 
 ---
 
+<details>
+<summary><b> 🔗 The `extern` Specifier (Section 16.2.3)</b></summary>
+
+---
+
+[Section 16.2.3 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS/(SECTION-16-2-3)-THE-EXTERN-SPECIFIER)
+
+---
+
+The `extern` storage-class specifier gives us a way to reference variables or functions that have been defined in other source files (.c) of the project.
+
+Imagine, for example, that you have a file called `bar.c` with the following complete content:
+
+```c
+// bar.c
+int a = 37;
+```
+
+- **That's it:** declaring a new integer variable `a` at file scope.
+
+Now, what if we had another source file in the same project, `foo.c`, and we wanted to access and modify that same variable `a` that lives in `bar.c`?
+
+With the `extern` keyword, this becomes very simple:
+
+```c
+// foo.c
+#include <stdio.h>
+
+extern int a;  // "Warning to the compiler: the variable 'a' exists and was defined in another file"
+
+int main(void) {
+    printf("%d\n", a);  // Prints 37 (value coming from bar.c!)
+    a = 99;
+    printf("%d\n", a);  // Modifies the same "a" from bar.c to 99
+}
+```
+
+We could also have placed the `extern int a;` declaration inside a block scope (like inside the `main` function), and it would still successfully reference the a from `bar.c`:
+
+```c
+// foo.c
+#include <stdio.h>
+
+int main(void) {
+    extern int a;
+    printf("%d\n", a);  // 37, coming from bar.c!
+    a = 99;
+    printf("%d\n", a);  // The same "a" from bar.c, but now it's 99
+}
+```
+
+---
+
+#### 🚫 The Counterpoint of static:
+If the variable `a` in `bar.c` had been marked as `static` (`static int a = 37;`), the example above **would not work at all**. As we saw in the previous section, `static` variables at file scope have internal linkage and remain strictly invisible to the outside world. If you try to use `extern` to pull something that is `static` in another file, the program will fail at link time.
+
+---
+
+#### 🌐 extern on Functions:
+An important note about using `extern` on functions: for functions, `extern` is the default (implicit) behavior.
+
+Whenever you write a function prototype in C (for example, `void my_function(void);`), the compiler already assumes it is `extern`. Therefore, putting the `extern` keyword before a function declaration is redundant. The only time you change this default is when you explicitly declare the function as `static`, restricting its use to that `.c` file.
+
+</details>
+
+---
+
 
 
 ---

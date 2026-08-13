@@ -7650,6 +7650,73 @@ Veremos mais sobre isso nas seções sobre compilação de projetos com múltipl
 
 ---
 
+<details>
+<summary><b> 🔗 O Especificador extern (Seção 16.2.3)</b></summary>
+
+---
+
+[Codigos da Seção 16.2.3 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-3)-O-ESPECIFICADOR-EXTERN)
+
+---
+
+O especificador de classe de armazenamento `extern` nos dá uma maneira de fazer referência a variáveis ou funções que foram definidas em outros arquivos fonte (.c) do projeto.
+
+Imagine, por exemplo, que você tenha um arquivo chamado `bar.c` com o seguinte conteúdo completo:
+
+```c
+// bar.c
+int a = 37;
+```
+
+- **Apenas isso:** declarando uma nova variável inteira `a` no escopo do arquivo.
+
+Agora, e se tivéssemos outro arquivo fonte no mesmo projeto, `foo.c`, e quiséssemos acessar e alterar essa mesma variável `a` que está lá em `bar.c`?
+
+Com a palavra-chave `extern`, isso fica muito simples:
+
+```c
+// foo.c
+#include <stdio.h>
+
+extern int a;  // "Aviso ao compilador: a variável 'a' existe e foi definida em outro arquivo"
+
+int main(void) {
+    printf("%d\n", a);  // Imprime 37 (valor vindo do bar.c!)
+    a = 99;
+    printf("%d\n", a);  // Altera o mesmo "a" do bar.c para 99
+}
+```
+
+Nós também poderíamos ter feito a declaração `extern int a;` dentro do escopo de um bloco (como dentro da função `main`), e ela ainda assim faria referência com sucesso ao `a` de `bar.c`:
+
+```c
+// foo.c
+#include <stdio.h>
+
+int main(void) {
+    extern int a;
+    printf("%d\n", a);  // 37, vindo do bar.c!
+    a = 99;
+    printf("%d\n", a);  // O mesmo "a" do bar.c, mas agora vale 99
+}
+```
+
+---
+
+#### 🚫 O Contraponto do static:
+Se a variável `a` em `bar.c` tivesse sido marcada como `static` (`static int a = 37;`), o exemplo acima **não funcionaria de jeito nenhum**. Como vimos na seção anterior, variáveis `static` no escopo de arquivo têm ligação interna (Internal Linkage) e ficam estritamente invisíveis para o mundo externo. Se você tentar usar `extern` para puxar algo que é `static` em outro arquivo, o programa vai falhar no momento da vinculação (Linking).
+
+---
+
+#### 🌐 extern em Funções:
+Uma nota importante sobre o uso de `extern` em funções: para funções, o `extern` é o comportamento padrão (implícito).
+
+Sempre que você escreve o protótipo de uma função em C (por exemplo, `void minha_funcao(void);`), o compilador já pressupõe que ela é `extern`. Portanto, colocar a palavra `extern` antes da declaração de uma função é redundante. O único momento em que você altera esse padrão é quando declara a função explicitamente como `static`, restringindo seu uso apenas àquele arquivo `.c`.
+
+</details>
+
+---
+
 
 
 ---
