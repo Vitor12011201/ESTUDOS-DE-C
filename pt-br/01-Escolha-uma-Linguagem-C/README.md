@@ -7652,6 +7652,7 @@ Veremos mais sobre isso nas seções sobre compilação de projetos com múltipl
 
 <details>
 <summary><b> 🔗 O Especificador extern (Seção 16.2.3)</b></summary>
+<br>
 
 ---
 
@@ -7712,6 +7713,78 @@ Se a variável `a` em `bar.c` tivesse sido marcada como `static` (`static int a 
 Uma nota importante sobre o uso de `extern` em funções: para funções, o `extern` é o comportamento padrão (implícito).
 
 Sempre que você escreve o protótipo de uma função em C (por exemplo, `void minha_funcao(void);`), o compilador já pressupõe que ela é `extern`. Portanto, colocar a palavra `extern` antes da declaração de uma função é redundante. O único momento em que você altera esse padrão é quando declara a função explicitamente como `static`, restringindo seu uso apenas àquele arquivo `.c`.
+
+</details>
+
+---
+
+<details>
+<summary><b>⚡ O Especificador 'register' (Seção 16.2.4)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 16.2.4 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-4)-O-ESPECIFICADOR-REGISTER)
+
+---
+
+Esta palavra-chave serve como uma "dica" para o compilador de que determinada variável será usada com muita frequência e, portanto, seu acesso deve ser tornado o mais rápido possível. No entanto, o compilador não tem nenhuma obrigação de obedecer ao seu pedido.
+
+Atualmente, os otimizadores dos compiladores modernos de C são extremamente eficientes em descobrir isso sozinhos, tornando o uso manual do register bastante raro hoje em dia.
+
+Mas, se você realmente quiser usar:
+
+```c
+#include <stdio.h>
+
+int main(void) {
+    register int a;   // Pede para tornar "a" o mais rápido possível de acessar
+
+    for (a = 0; a < 10; a++) {
+        printf("%d\n", a);
+    }
+}
+```
+
+---
+
+#### ⚠️ O Preço do register: Proibido Pegar Endereço!
+Essa velocidade potencial tem um custo estrito: **você não pode obter o endereço de memória** de uma variável `register` usando o operador `&`.
+
+```c
+register int a;
+int *p = &a;    // ERRO DE COMPILAÇÃO! Não é possível obter o endereço de um registrador
+```
+
+- A mesma restrição se aplica a qualquer parte de um array (pois arrays decaem para ponteiros ao serem acessados):
+
+```c
+register int a[] = {11, 22, 33, 44, 55};
+int *p = a;  // ERRO DE COMPILAÇÃO! Não é possível obter o endereço de a[0]
+```
+
+- Curiosamente, para a sintaxe equivalente usando a notação de colchetes, o GCC emite apenas um aviso (warning):
+
+```c
+register int a[] = {11, 22, 33, 44, 55};
+int val = a[2];  // AVISO DO COMPILADOR: warning: ISO C forbids subscripting 'register' array
+```
+
+---
+
+#### 🛠️ O Lado Positivo da Restrição
+O simples fato de o programa proibir a obtenção do endereço de uma variável `register` dá total liberdade para o compilador realizar otimizações agressivas. Como não há como criar um ponteiro para ela, o compilador tem certeza absoluta de que nenhum outro trecho de código alterará essa variável indiretamente (Pointer Aliasing).
+
+Além disso, adicionar `register` a uma variável `const` impede que alguém passe o ponteiro dessa variável para outra função que tente ignorar sua constância.
+
+---
+
+#### 📜 Um Pouco de História de Hardware
+Nas profundezas da CPU existem pequenas unidades de memória dedicadas e ultra-rápidas chamadas Registradores (como os **registradores** `RAX`, `RBX`, `RCX` em x86 ou `R0` - `R12` em ARM).
+
+Acessar um registrador interno da CPU é ordens de grandeza mais rápido do que buscar um dado na memória RAM. Porém, como os registradores ficam dentro do próprio núcleo do processador e não no barramento de memória RAM, **eles não possuem um endereço de memória física**. É exatamente por isso que o operador `&` falha.
+
+Hoje em dia, os compiladores (como GCC e Clang) utilizam algoritmos avançados de alocação de registradores (baseados em coloração de grafos) e geram código de máquina impecável. Eles alocam variáveis em registradores sempre que vantajoso, independentemente de você ter escrito `register` ou não. Na verdade, a especificação do C permite que o compilador ignore a palavra `register` e a trate exatamente como `auto`.
 
 </details>
 
