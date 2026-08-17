@@ -7790,7 +7790,39 @@ Hoje em dia, os compiladores (como GCC e Clang) utilizam algoritmos avançados d
 
 ---
 
+<details>
+<summary><b>🧵 O Especificador _Thread_local (Seção 16.2.5)</b></summary>
+<br>
 
+---
+
+[Codigos da Seção 16.2.5 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_016/(SECAO-16-2)-ESPECIFICADORES-DE-CLASSE-DE-ARMAZENAMENTO/(SECAO-16-2-5)-O-ESPECIFICADOR-THREAD-LOCAL)
+
+---
+
+Ao trabalhar com múltiplas threads e utilizar variáveis no escopo global ou variáveis static em escopo de bloco, o _Thread_local é a forma nativa do C de garantir que cada thread receba sua própria cópia privada e independente da variável. Isso evita condições de corrida (race conditions) e conflitos de memória entre threads sem a necessidade de usar travas (mutexes).
+
+#### Regras de Uso:
+
+- Escopo de Bloco: Se você declarar uma variável `_Thread_local` dentro de uma função (escopo de bloco), é obrigatório combiná-la com o especificador `static` ou `extern`.
+
+- Sintaxe Amigável: A partir do C11, ao incluir o cabeçalho `<threads.h>`, você pode utilizar a macro `thread_local`, que serve como um apelido mais palatável e legível para o operador nativo `_Thread_local`.
+
+```c
+#include <stdio.h>
+#include <threads.h>
+
+// Variável global onde cada thread possui sua própria cópia isolada
+thread_local int contador_da_thread = 0;
+
+void processar_dados(void) {
+    // Em escopo de bloco, exige 'static' ou 'extern'
+    static thread_local int execucoes_locais = 0;
+    execucoes_locais++;
+}
+```
+
+</details>
 
 ---
 

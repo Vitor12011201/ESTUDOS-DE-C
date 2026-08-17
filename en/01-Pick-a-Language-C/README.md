@@ -7749,7 +7749,39 @@ Nowadays, compilers (like GCC and Clang) use advanced register allocation algori
 
 ---
 
+<details>
+<summary><b>🧵 The `_Thread_local` Specifier (Section 16.2.5)</b></summary>
+<br>
 
+---
+
+[Section 16.2.5 code can be found here](./CODE_BY_DAY/DAY_016/(SECTION-16-2)-STORAGE-CLASS-SPECIFIERS/(SECTION-16-2-5)-THE-THREAD-LOCAL-SPECIFIER)
+
+---
+
+When working with multiple threads and using variables in global scope or `static` variables in block scope, `_Thread_local` is C's native way of ensuring that each thread receives its own private and independent copy of the variable. This avoids race conditions and memory conflicts between threads without the need for mutex locks.
+
+#### Usage Rules:
+
+- **Block Scope:** If you declare a `_Thread_local` variable inside a function (block scope), it is mandatory to combine it with the `static` or `extern` specifier.
+
+- **Friendly Syntax:** From C11 onward, by including the `<threads.h>` header, you can use the `thread_local` macro, which serves as a more palatable and readable alias for the native `_Thread_local` operator.
+
+```c
+#include <stdio.h>
+#include <threads.h>
+
+// Global variable where each thread has its own isolated copy
+thread_local int thread_counter = 0;
+
+void process_data(void) {
+    // In block scope, requires 'static' or 'extern'
+    static thread_local int local_executions = 0;
+    local_executions++;
+}
+```
+
+</details>
 
 ---
 
