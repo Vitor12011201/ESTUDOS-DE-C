@@ -7783,8 +7783,57 @@ void process_data(void) {
 
 </details>
 
----
+</details>
 
 </details>
+
+---
+
+<details>
+  <summary><b>🔹 Day 17: Multi‑File Projects</b></summary>
+
+---
+
+[Day 17 code can be found here](./CODE_BY_DAY/DAY_017)
+
+---
+
+<details>
+<summary><b>📁 Introduction to Multi‑File Projects (Section 17.0)</b></summary>
+<br>
+
+---
+
+[Section 17.0 code can be found here](./CODE_BY_DAY/DAY_017/(SECTION-17-0)-INTRODUCTION-MULTI-FILE-PROJECTS)
+
+---
+
+Until now, we have been looking at didactic programs that, for the most part, fit into a single file. However, complex programs in C are composed of multiple files that are compiled and linked together into a single final executable.
+
+In this chapter, we will explore the most common patterns and practices for organizing and structuring larger projects.
+
+#### 💡 Study Insight:
+Translation Units and the Linking Process
+Understanding how multiple files work in C requires demystifying how the compiler sees the code:
+
+1. **Translation Units:** The C compiler (like GCC or Clang) never compiles the entire project at once. It processes each .c file individually and in isolation, generating an intermediate object file (.o or .obj).
+
+2. **Header Files (.h):** They serve as the public "contract" between files. They contain function declarations, struct definitions, and macros so that one .c file knows how to talk to another during compilation.
+
+3. **The Linker (ld):** Brings together all the .o files and external libraries, resolving memory addresses and shared symbols to generate the final executable binary.
+
+Splitting code into multiple modules brings two immediate benefits:
+
+- Maintainability and Encapsulation: Isolated modules with clear responsibilities (e.g., network drivers, graphics rendering, input logic).
+
+- Incremental Compilation: Using build automation tools (like make or CMake), if you change only one .c file, only that file is recompiled into a .o and relinked, avoiding recompiling the entire project on every test.
+
+</details>
+
+---
+
+
+
+---
 
 </details>

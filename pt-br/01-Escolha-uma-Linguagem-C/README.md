@@ -7824,8 +7824,57 @@ void processar_dados(void) {
 
 </details>
 
----
+</details>
 
 </details>
+
+---
+
+<details>
+  <summary><b>🔹 Dia 17: Projetos com Vários Arquivos</b></summary>
+
+---
+
+[Codigos do dia 17 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017)
+
+---
+
+<details>
+<summary><b>📁 Introdução Projetos com Múltiplos Arquivos (Seção 17.0)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 17.0 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017/(SECAO-17-0)-INDRODUCAO-PROJETOS-COM-MULTIPLOS-ARQUIVOS)
+
+---
+
+Até agora, estivemos analisando programas didáticos que, em sua grande maioria, cabem em um único arquivo. No entanto, programas complexos em C são compostos por vários arquivos que são compilados e vinculados (linked) juntos em um único executável final.
+
+Neste capítulo, vamos explorar os padrões e práticas mais comuns para organizar e estruturar projetos de maior porte.
+
+#### 💡 Insight de Estudo:
+Unidades de Tradução e o Processo de Linkedição
+Entender como múltiplos arquivos funcionam em C exige desmistificar como o compilador enxerga o código:
+
+1. **Unidades de Tradução (Translation Units):** O compilador C (como o GCC ou Clang) nunca compila o projeto inteiro de uma vez só. Ele processa cada arquivo .c individualmente e de forma isolada, gerando um arquivo objeto intermediário (.o ou .obj).
+
+2. **Arquivos de Cabeçalho (.h):** Servem como o "contrato" público entre os arquivos. Eles contêm declarações de funções, definições de struct e macros para que um arquivo .c saiba como conversar com outro durante a compilação.
+
+3. **O Linker (ld):** Junta todos os arquivos .o e bibliotecas externas, resolvendo os endereços de memória e símbolos compartilhados para gerar o binário final executável.
+
+Dividir o código em múltiplos módulos traz dois benefícios imediatos:
+
+ - Manutenibilidade e Encapsulamento: Módulos isolados com responsabilidades claras (ex.: drivers de rede, renderização gráfica, lógica de entrada).
+
+ - Compilação Incremental: Usando ferramentas de automação de build (como make ou CMake), se você alterar apenas um arquivo .c, somente ele será recompilado em um .o e reenviado ao linker, evitando recompilar o projeto inteiro a cada teste.
+
+</details>
+
+---
+
+
+
+---
 
 </details>
