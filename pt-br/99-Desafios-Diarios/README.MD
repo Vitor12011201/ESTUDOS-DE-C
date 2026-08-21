@@ -103,6 +103,13 @@ Estudos e exercícios sobre qualificadores de tipo e especificadores de armazena
 * **Competências:** Uso do qualificador `const`, criação de variáveis constantes, aplicação de `const` em parâmetros de funções, diferenciação entre ponteiros para valores constantes e ponteiros constantes, combinação de múltiplos níveis de `const` e interpretação de declarações complexas envolvendo ponteiros.
 * **Destaque:** Compreensão das diferenças entre `const int *p`, `int *const p` e `const int *const p`, controle sobre o que pode ou não ser modificado através de um ponteiro e desenvolvimento de códigos mais seguros, previsíveis e resistentes a alterações acidentais.
 
+### [16-Projetos-Multiplos-Arquivos](./16-Projetos-multiplos-arquivos(Execicios))
+
+**O que encontrará aqui:**
+Estudos e exercícios sobre a organização de programas em C utilizando múltiplos arquivos, explorando como separar declarações, implementações e diferentes partes de um projeto para construir aplicações maiores e mais organizadas.
+* **Competências:** Criação e uso de arquivos `.c` e `.h`, declaração de protótipos de funções em headers, utilização de `#include` com arquivos próprios, criação de include guards com `#ifndef`, `#define` e `#endif`, uso de `static` e `extern` entre diferentes arquivos, compilação separada com `gcc -c`, geração de arquivos objeto `.o` e linkagem de múltiplos módulos em um único executável.
+* **Destaque:** Compreensão do processo completo de compilação de projetos multifile, diferenciando pré-processamento, compilação e linkagem, evitando declarações implícitas e inclusões repetidas, além de entender como arquivos objeto permitem recompilar apenas as partes modificadas de projetos maiores.
+
 ---
 
 ## 🛠️ Tecnologias e Ferramentas

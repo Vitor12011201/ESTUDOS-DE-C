@@ -103,6 +103,13 @@ Studies and exercises on type qualifiers and storage specifiers in the C languag
 * **Skills:** Use of the `const` qualifier, creation of constant variables, application of `const` in function parameters, differentiation between pointers to constant values and constant pointers, combination of multiple levels of `const`, and interpretation of complex declarations involving pointers.
 * **Highlight:** Understanding the differences between `const int *p`, `int *const p`, and `const int *const p`, control over what can or cannot be modified through a pointer, and development of safer, more predictable code resistant to accidental changes.
 
+### [16-Multi-File-Projects](./16-Multi-File-Projects(Exercises))
+
+**What you will find here:**
+Studies and exercises on organizing C programs using multiple files, exploring how to separate declarations, implementations, and different parts of a project to build larger, more organized applications.
+* **Skills:** Creation and use of `.c` and `.h` files, declaration of function prototypes in headers, use of `#include` with custom files, creation of include guards with `#ifndef`, `#define`, and `#endif`, use of `static` and `extern` across different files, separate compilation with `gcc -c`, generation of object files `.o`, and linking multiple modules into a single executable.
+* **Highlight:** Understanding the complete build process of multi‑file projects, differentiating preprocessing, compilation, and linking, avoiding implicit declarations and repeated inclusions, as well as understanding how object files allow recompiling only modified parts of larger projects.
+
 ---
 
 ## 🛠️ Technologies and Tools
