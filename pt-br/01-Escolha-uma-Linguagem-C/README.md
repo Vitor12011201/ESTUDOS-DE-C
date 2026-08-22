@@ -7873,6 +7873,118 @@ Dividir o código em múltiplos módulos traz dois benefícios imediatos:
 
 ---
 
+<details>
+<summary><b>🧩 Includes e Protótipos de Funções (Seçãp 17.1)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 17.1 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017/(SECAO-17-1)-INCLIDES-E-PROTOTIPOS-DE-FUNCOES)
+
+---
+
+Uma situação extremamente comum em projetos de software é ter funções definidas em um arquivo fonte e precisar chamá-las a partir de outro arquivo.
+
+Para compilar múltiplos arquivos no GCC, você deve especificar todos os arquivos fonte .c na linha de comando:
+
+```Bash
+#  arquivo de saída     arquivos fonte
+#         v               v
+#     |-------| |-------------------|
+gcc   -o foo     foo.c      bar.c
+```
+
+No exemplo acima, `foo.c` e `bar.c` são compilados e vinculados juntos para gerar o executável chamado `foo`.
+
+---
+
+#### O Problema da Declaração Implícita:
+
+Vamos observar primeiro o arquivo `bar.c`:
+
+```c
+// Arquivo bar.c
+int add(int x, int y) {
+    return x + y;
+}
+```
+
+E agora o arquivo `foo.c`, onde fica a função `main`:
+
+```c
+// Arquivo foo.c
+#include <stdio.h>
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // Chamando add() definida em bar.c!
+}
+```
+
+Se tentarmos compilar esse projeto com `gcc -o foo foo.c bar.c`, o compilador emitirá um erro (ou um aviso grave):
+
+```Plaintext
+error: implicit declaration of function 'add' is invalid in C99
+```
+
+(Lembre-se: **nunca ignore avisos (warnings) do compilador em C**. Trate todos como erros).
+
+Declarações implícitas foram banidas a partir do C99. Isso acontece porque o C processa cada arquivo `.c` de forma isolada e precisa saber com antecedência qual é o tipo de retorno da função e quais parâmetros ela espera antes de permitir que ela seja chamada.
+
+---
+
+#### Solução 1: Protótipo Manual
+Poderíamos resolver isso adicionando o protótipo da função `add` no topo do arquivo `foo.c`:
+
+```c
+// Arquivo foo.c
+#include <stdio.h>
+
+int add(int, int);  // Protótipo da função
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // Funciona perfeitamente!
+}
+```
+
+O erro desaparece! Porém, reescrever o protótipo manualmente em todo arquivo que precisar usar a função `add()` é inviável em projetos grandes.
+
+#### Solução 2: Criando um Arquivo de Cabeçalho (Header File)
+Quando usamos `printf()`, não precisamos digitar seu protótipo manualmente porque já incluímos o arquivo `stdio.h` com a diretiva `#include`. Podemos fazer exatamente o mesmo para o nosso próprio módulo!
+Por convenção, arquivos de cabeçalho possuem a extensão `.h` e costumam compartilhar o mesmo nome do arquivo `.c` correspondente.
+Criamos então o arquivo `bar.h` com o protótipo:
+
+```c
+// Arquivo bar.h
+int add(int, int);
+```
+
+E no `foo.c`, incluímos o arquivo local usando **aspas duplas** (em vez de parênteses angulares `<>`):
+
+```c
+// Arquivo foo.c
+#include <stdio.h>
+#include "bar.h"  // Inclui o cabeçalho localizado no diretório atual
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // 5!
+}
+```
+
+A diretiva `#include` é um comando do pré-processador que literalmente copia e cola o conteúdo do arquivo indicado exatamente onde a linha está escrita.
+
+Compilando e executando:
+
+```Bash
+./foo
+5
+```
+
+O resultado é `5`! No entanto, ainda há uma peça fundamental de infraestrutura (boilerplate) que precisamos adicionar aos arquivos `.h` para evitar problemas de inclusão duplicada.
+
+</details>
+
+---
+
 
 
 ---

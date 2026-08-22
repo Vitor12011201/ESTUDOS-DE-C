@@ -7832,6 +7832,117 @@ Splitting code into multiple modules brings two immediate benefits:
 
 ---
 
+<details>
+<summary><b>🧩 Includes and Function Prototypes (Section 17.1)</b></summary>
+<br>
+
+---
+
+[Section 17.1 code can be found here](./CODE_BY_DAY/DAY_017/(SECTION-17-1)-INCLUDES-AND-FUNCTION-PROTOTYPES)
+
+---
+
+A very common situation in software projects is having functions defined in one source file and needing to call them from another file.
+
+To compile multiple files with GCC, you must specify all .c source files on the command line:
+
+```Bash
+#      output file     source files
+#         v               v
+#     |-------| |-------------------|
+gcc   -o foo     foo.c      bar.c
+```
+
+In the example above, `foo.c` and `bar.c` are compiled and linked together to generate the executable named `foo`.
+
+---
+
+#### The Problem of Implicit Declaration:
+Let us first look at the file `bar.c`:
+
+```c
+// File bar.c
+int add(int x, int y) {
+    return x + y;
+}
+```
+
+And now the file `foo.c`, where the `main` function resides:
+
+```c
+// File foo.c
+#include <stdio.h>
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // Calling add() defined in bar.c!
+}
+```
+
+If we try to compile this project with `gcc -o foo foo.c bar.c`, the compiler will emit an error (or a severe warning):
+
+```Plaintext
+error: implicit declaration of function 'add' is invalid in C99
+```
+
+(Remember: **never ignore compiler warnings in C**. Treat them all as errors).
+
+Implicit declarations were banned starting from C99. This happens because C processes each `.c` file in isolation and needs to know in advance the function's return type and what parameters it expects before allowing it to be called.
+
+---
+
+#### Solution 1: Manual Prototype
+We could solve this by adding the prototype for the `add` function at the top of `foo.c`:
+
+```c
+// File foo.c
+#include <stdio.h>
+
+int add(int, int);  // Function prototype
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // Works perfectly!
+}
+```
+
+The error disappears! However, manually rewriting the prototype in every file that needs to use `add()` is impractical in large projects.
+
+#### Solution 2: Creating a Header File
+When we use `printf()`, we do not need to type its prototype manually because we already include the `stdio.h` file with the `#include` directive. We can do exactly the same for our own module!
+By convention, header files have the `.h` extension and usually share the same name as the corresponding `.c` file.
+So we create the file bar.h with the prototype:
+
+```c
+// File bar.h
+int add(int, int);
+```
+
+And in `foo.c`, we include the local file using double quotes (instead of angle brackets `<>`):
+
+```c
+// File foo.c
+#include <stdio.h>
+#include "bar.h"  // Includes the header located in the current directory
+
+int main(void) {
+    printf("%d\n", add(2, 3));  // 5!
+}
+```
+
+The `#include` directive is a preprocessor command that literally copies and pastes the content of the indicated file exactly where the line is written.
+
+Compiling and running:
+
+```bash
+./foo
+5
+```
+
+The result is `5`! However, there is still a fundamental piece of boilerplate that we need to add to `.h` files to avoid duplicate inclusion issues.
+
+</details>
+
+---
+
 
 
 ---

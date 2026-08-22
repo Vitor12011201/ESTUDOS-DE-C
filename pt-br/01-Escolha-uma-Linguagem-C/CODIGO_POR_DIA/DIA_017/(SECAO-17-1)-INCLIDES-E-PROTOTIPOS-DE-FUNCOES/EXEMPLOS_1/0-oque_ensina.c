@@ -1,0 +1,1 @@
+/* O que ensina: A inclusão de #include "1-bar.h" dentro de 1-foo.c informa o compilador sobre o tipo de retorno e os parâmetros de add() antes de ser chamada, eliminando avisos/erros de declaração implícita sem a necessidade de reescrever protótipos manualmente.*/
