@@ -7985,6 +7985,60 @@ O resultado é `5`! No entanto, ainda há uma peça fundamental de infraestrutur
 
 ---
 
+<details>
+<summary><b>🛡️ Lidando com Inclusões Repetidas (Seção 17.2)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 17.2 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017/(SECAO-17-2)-LIDANDO-COM-INCLUSÕES-REPETIDAS)
+
+---
+
+É muito comum que um arquivo de cabeçalho (`.h`) inclua outros cabeçalhos necessários para o seu próprio funcionamento. Afinal, por que não?
+
+No entanto, isso pode fazer com que um mesmo cabeçalho seja incluído múltiplas vezes a partir de diferentes pontos do código. Em alguns casos isso é inofensivo, mas em muitos outros pode gerar erros graves de redefinição de tipos, estruturas ou enumerações. E nós não temos como controlar de quantos lugares um arquivo será incluído no projeto final.
+
+Pior ainda: podemos cair em um ciclo infinito de inclusão circular, onde o arquivo `a.h` inclui o `b.h`, e o `b.h` inclui o `a.h`!
+
+Tentar compilar algo assim resulta no clássico erro do pré-processador:
+
+```plaintext
+error: #include nested depth 200 exceeds maximum of 200
+```
+
+(Quem sabe se no passo 201 o ciclo não teria se resolvido...)
+
+A solução é garantir que, se um arquivo for incluído uma vez, todas as inclusões subsequentes dele sejam completamente ignoradas pelo pré-processador.
+
+A técnica usada para isso é chamada de Include Guard e é tão universal que você deve aplicá-la automaticamente sempre que criar qualquer arquivo `.h`!
+
+#### O Mecanismo do Include Guard
+
+Usamos diretivas condicionais do pré-processador (`#ifndef`, `#define` e `#endif`). Na primeira vez em que o arquivo é incluído, definimos uma variável de controle (macro). Nas inclusões seguintes, o pré-processador verifica se essa macro já existe; se existir, ele ignora todo o conteúdo do arquivo.
+
+Por convenção, o nome dessa variável é o próprio nome do arquivo em maiúsculas, substituindo o ponto por um traço baixo: `bar.h` vira `BAR_H`.
+
+> ⚠️ **Atenção à regra de nomenclatura:** Nunca comece o nome da macro com um sublinhado (`_BAR_H`) ou dois sublinhados (`__BAR_H`). No padrão C, macros iniciadas com um sublinhado seguido de letra maiúscula ou dois sublinhados são estritamente reservadas para o compilador e a biblioteca padrão.
+
+Veja como fica o arquivo `bar.h` protegido com Include Guards:
+
+```c
+#ifndef BAR_H   // Se a macro BAR_H ainda NÃO foi definida...
+#define BAR_H   // Defina BAR_H (sem nenhum valor em particular)
+
+// Arquivo bar.h
+int add(int, int);
+
+#endif          // Fim da verificação do #ifndef BAR_H
+```
+
+Com essa estrutura simples, não importa quantas vezes ou de quantos arquivos diferentes você faça `#include "bar.h"`, o seu conteúdo interno só será processado pelo compilador uma única vez.
+
+</details>
+
+---
+
 
 
 ---

@@ -7943,6 +7943,59 @@ The result is `5`! However, there is still a fundamental piece of boilerplate th
 
 ---
 
+<details>
+<summary><b>🛡️ Dealing with Duplicate Inclusions (Section 17.2)</b></summary>
+<br>
+
+---
+
+[Section 17.2 code can be found here](./CODE_BY_DAY/DAY_017/(SECTION-17-2)-DEALING-WITH-DUPLICATE-INCLUSIONS)
+
+---
+
+It is very common for a header file (`.h`) to include other headers necessary for its own operation. After all, why not?
+
+However, this can cause the same header to be included multiple times from different points in the code. In some cases this is harmless, but in many others it can cause serious errors of redefinition of types, structures, or enumerations. And we have no way to control from how many places a file will be included in the final project.
+
+Even worse: we can fall into an infinite loop of circular inclusion, where file `a.h` includes `b.h`, and `b.h` includes `a.h`!
+
+Trying to compile something like that results in the classic preprocessor error:
+
+```plaintext
+error: #include nested depth 200 exceeds maximum of 200
+```
+
+(Who knows, maybe at step 201 the cycle would have resolved itself...)
+
+The solution is to ensure that if a file is included once, all subsequent inclusions of it are completely ignored by the preprocessor.
+
+The technique used for this is called an Include Guard and is so universal that you should automatically apply it whenever you create any `.h` file!
+
+#### The Include Guard Mechanism
+We use conditional preprocessor directives (`#ifndef`, `#define`, and `#endif`). The first time the file is included, we define a control variable (macro). On subsequent inclusions, the preprocessor checks whether that macro already exists; if it does, it ignores the entire content of the file.
+
+By convention, the name of this variable is the file's own name in uppercase, replacing the dot with an underscore: `bar.h` becomes `BAR_H`.
+
+> ⚠️ **Naming convention warning:** Never start the macro name with an underscore (`_BAR_H`) or two underscores (`__BAR_H`). In the C standard, macros beginning with an underscore followed by an uppercase letter or two underscores are strictly reserved for the compiler and the standard library.
+
+Here is what the `bar.h` file looks like protected with Include Guards:
+
+```c
+#ifndef BAR_H   // If the macro BAR_H has NOT been defined yet...
+#define BAR_H   // Define BAR_H (with no particular value)
+
+// bar.h file
+int add(int, int);
+
+#endif          // End of the #ifndef BAR_H check
+```
+
+With this simple structure, no matter how many times or from how many different files you `#include "bar.h"`, its internal content will only be processed by the compiler once.
+
+</details>
+
+---
+
 
 
 ---
