@@ -8039,6 +8039,34 @@ Com essa estrutura simples, não importa quantas vezes ou de quantos arquivos di
 
 ---
 
+<details>
+<summary><b>🔒 static e extern (Seção 17.3)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 17.3 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017/(SECAO-17-3)-static-E-extern)
+
+---
+
+Em projetos compostos por múltiplos arquivos, a combinação dos especificadores `extern` e `static` define quem pode enxergar o quê no seu código:
+
+ - Você pode fazer referência a variáveis e funções definidas em outros arquivos fonte usando a palavra-chave `extern`.
+
+ - Você pode garantir que variáveis e funções em escopo de arquivo fiquem estritamente privadas para o arquivo atual usando a palavra-chave `static` (impedindo que outros arquivos as acessem, mesmo que tentem usar `extern`).
+
+#### 💡 Insight de Estudo: A Regra do "Princípio do Menor Privilégio" em C
+
+Em linguagens orientadas a objetos (como C++ ou Java), temos modificadores de acesso explícitos como private e public. Em C puro, implementamos o conceito de encapsulamento de módulos usando a ligação (Linkage):
+
+1. **Ligação Externa (External Linkage - Padrão/`extern`):** Funções e variáveis globais sem a palavra `static` são exportadas na tabela de símbolos do arquivo objeto (`.o`). Qualquer outro arquivo `.c` do projeto pode acessá-las.
+
+2. **Ligação Interna (Internal Linkage - `static`):** O compilador oculta o símbolo durante a etapa de linkagem. Ninguém fora daquele `.c` consegue enxergar ou chamar aquele elemento.
+
+</details>
+
+---
+
 
 
 ---

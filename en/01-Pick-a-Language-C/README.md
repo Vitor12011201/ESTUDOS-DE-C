@@ -7996,6 +7996,34 @@ With this simple structure, no matter how many times or from how many different 
 
 ---
 
+<details>
+<summary><b>🔒 static and extern (Section 17.3)</b></summary>
+<br>
+
+---
+
+[Section 17.3 code can be found here](./CODE_BY_DAY/DAY_017/(SECTION-17-3)-STATIC-AND-EXTERN)
+
+---
+
+In multi‑file projects, the combination of the `extern` and `static` specifiers defines who can see what in your code:
+
+- You can reference variables and functions defined in other source files using the `extern` keyword.
+
+- You can ensure that file‑scope variables and functions remain strictly private to the current file by using the `static` keyword (preventing other files from accessing them, even if they try to use `extern`).
+
+#### 💡 Study Insight: The "Principle of Least Privilege" in C
+
+In object‑oriented languages (like C++ or Java), we have explicit access modifiers such as `private` and `public`. In plain C, we implement the concept of module encapsulation using linkage:
+
+1. **External Linkage (Default / `extern`):** Global variables and functions without the `static` keyword are exported in the object file's (`.o`) symbol table. Any other `.c` file in the project can access them.
+
+2. **Internal Linkage (`static`):** The compiler hides the symbol during the linking stage. No one outside that `.c` file can see or call that element.
+
+</details>
+
+---
+
 
 
 ---
