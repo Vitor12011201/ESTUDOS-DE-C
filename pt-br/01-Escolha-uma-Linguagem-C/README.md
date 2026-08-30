@@ -8067,6 +8067,60 @@ Em linguagens orientadas a objetos (como C++ ou Java), temos modificadores de ac
 
 ---
 
+<details>
+<summary><b>⚙️ Compilando com Arquivos Objetos(Seção 17.4)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 17.4 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_017/(SECAO-17-4)-COMPILANDO-COM-ARQUIVOS-OBJETOS)
+
+---
+
+Isso não faz parte da especificação formal da linguagem C, mas é algo 99,999% comum no ecossistema da linguagem.
+
+Podemos compilar arquivos C em representações intermediárias chamadas arquivos objetos (object files). Eles contêm o código de máquina (as instruções em binário de 0s e 1s) correspondente ao seu código, mas que ainda não foram vinculadas (linked) em um executável final.
+
+No Windows, os arquivos objetos costumam ter a extensão `.OBJ`; em sistemas Unix-like (como Linux e macOS), eles possuem a extensão `.o`.
+
+No GCC, podemos gerar arquivos objetos usando a flag `-c` (compilar apenas!):
+
+```bash
+gcc -c foo.c     # produz foo.o
+gcc -c bar.c     # produz bar.o
+```
+
+E então podemos vincular (linkar) esses arquivos objetos em um único executável final:
+
+```bash
+gcc -o foo foo.o bar.o
+```
+
+Pronto, geramos um executável chamado `foo` a partir de dois arquivos objetos.
+
+#### Por que se dar a todo esse trabalho?
+Mas você deve estar pensando: por que se dar ao trabalho de fazer isso em duas etapas? Não poderíamos simplesmente executar o comando abaixo e matar dois coelhos com uma cajadada só?
+
+```bash
+gcc -o foo foo.c bar.c
+```
+
+Para programas pequenos, isso é totalmente aceitável. Eu mesmo faço isso o tempo todo.
+
+Porém, para programas de grande porte, podemos tirar proveito do fato de que compilar o código fonte C para arquivos objetos é um processo relativamente lento, enquanto vincular um conjunto de arquivos objetos já existentes é um processo extremamente rápido.
+
+Essa vantagem brilha de verdade ao usar ferramentas como o Make (ou build systems em geral), que verificam se os arquivos fontes são mais recentes do que seus arquivos de saída correspondentes e recompilam apenas o que mudou.
+
+Imagine que você tenha um projeto com 1.000 arquivos C. Você pode compilar todos eles para arquivos objetos na primeira vez (o que será um processo demorado) e depois unir todos esses arquivos objetos no executável final (rápido).
+
+Agora imagine que você alterou apenas um desses mil arquivos fontes. Aqui está a mágica: você só precisa recompilar aquele único arquivo .c alterado para gerar o seu .o correspondente! Em seguida, você executa a etapa de linkagem reconstruindo o executável com os 999 arquivos .o pré-existentes e o novo .o gerado. Todos os outros 999 arquivos .c nem sequer são tocados.
+
+Em outras palavras, ao recompilar apenas os arquivos objetos que realmente mudaram, reduzimos drasticamente o tempo de compilação do projeto. (A menos, é claro, que você esteja fazendo uma compilação limpa — clean build —, caso em que todos os arquivos objetos precisam ser regerados do zero).
+
+</details>
+
+---
+
 
 
 ---
