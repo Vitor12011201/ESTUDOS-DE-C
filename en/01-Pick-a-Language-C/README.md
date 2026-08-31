@@ -8024,6 +8024,60 @@ In object‑oriented languages (like C++ or Java), we have explicit access modif
 
 ---
 
+<details>
+<summary><b>⚙️ Compiling with Object Files (Section 17.4)</b></summary>
+<br>
+
+---
+
+[Section 17.4 code can be found here](./CODE_BY_DAY/DAY_017/(SECTION-17-4)-COMPILING-WITH-OBJECT-FILES)
+
+---
+
+This is not part of the formal C language specification, but it is 99.999% common in the language's ecosystem.
+
+We can compile C files into intermediate representations called object files. They contain the machine code (the binary 0s and 1s instructions) corresponding to your code, but they have not yet been linked into a final executable.
+
+On Windows, object files usually have the `.OBJ` extension; on Unix-like systems (such as Linux and macOS), they have the `.o` extension.
+
+In GCC, we can generate object files using the `-c` flag (compile only!):
+
+```bash
+gcc -c foo.c     # produces foo.o
+gcc -c bar.c     # produces bar.o
+```
+
+And then we can link those object files into a single final executable:
+
+```bash
+gcc -o foo foo.o bar.o
+```
+
+Done – we have generated an executable called `foo` from two object files.
+
+#### Why go through all this trouble?
+But you might be thinking: why bother doing this in two steps? Couldn't we just run the command below and kill two birds with one stone?
+
+```bash
+gcc -o foo foo.c bar.c
+```
+
+For small programs, this is perfectly acceptable. I do it all the time myself.
+
+However, for large programs, we can take advantage of the fact that compiling C source code into object files is a relatively slow process, while linking an existing set of object files is extremely fast.
+
+This advantage really shines when using tools like Make (or build systems in general), which check whether source files are newer than their corresponding output files and recompile only what has changed.
+
+Imagine you have a project with 1,000 C files. You can compile all of them into object files the first time (which will be a time‑consuming process) and then link all those object files into the final executable (fast).
+
+Now imagine you changed only one of those thousand source files. Here is the magic: you only need to recompile that single changed `.c` file to generate its corresponding `.o`! Then you run the linking step, rebuilding the executable with the 999 pre‑existing `.o` files and the newly generated .`o.` All the other 999 .c files are never even touched.
+
+In other words, by recompiling only the object files that actually changed, we drastically reduce the project's compilation time. (Unless, of course, you are doing a clean build – in which case all object files must be regenerated from scratch).
+
+</details>
+
+---
+
 
 
 ---
