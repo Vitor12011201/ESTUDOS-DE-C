@@ -8119,6 +8119,35 @@ Em outras palavras, ao recompilar apenas os arquivos objetos que realmente mudar
 
 </details>
 
+</details>
+
+---
+
+<details>
+  <summary><b>🔹 Dia 18: O Ambiente Externo</b></summary>
+
+---
+
+[Codigos do dia 18 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_018)
+
+---
+
+<details>
+<summary><b>🌍 Introdução O Ambiente Externo (Seção 18.0)</b></summary>
+<br>
+
+---
+
+[Codigos da Seção 18.0 podem ser encontrados aqui](./CODIGO_POR_DIA/DIA_018/(SECAO-18-0)-INTRODUCAO-O-AMBIENTE-EXTERNO)
+
+---
+
+Quando você executa um programa, na verdade é você quem está falando com o shell, dizendo: "Ei, por favor, execute isso". E o shell responde: "Claro", e então diz ao sistema operacional: "Ei, você poderia criar um novo processo e executar isso?". E se tudo correr bem, o sistema operacional acata e seu programa é executado.
+
+Mas existe todo um mundo fora do seu programa, no shell, com o qual você pode interagir a partir do C. Vamos analisar alguns desses mundos neste capítulo.
+
+</details>
+
 ---
 
 
@@ -8126,3 +8155,4 @@ Em outras palavras, ao recompilar apenas os arquivos objetos que realmente mudar
 ---
 
 </details>
+

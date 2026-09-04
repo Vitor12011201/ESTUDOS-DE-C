@@ -8076,6 +8076,35 @@ In other words, by recompiling only the object files that actually changed, we d
 
 </details>
 
+</details>
+
+---
+
+<details>
+  <summary><b>🔹 Day 18: The External Environment</b></summary>
+
+---
+
+[Day 18 code can be found here](./CODE_BY_DAY/DAY_018)
+
+---
+
+<details>
+<summary><b>🌍 Introduction to the External Environment (Section 18.0)</b></summary>
+<br>
+
+---
+
+[Section 18.0 code can be found here](./CODE_BY_DAY/DAY_018/(SECTION-18-0)-INTRODUCTION-THE-EXTERNAL-ENVIRONMENT)
+
+---
+
+When you run a program, it is actually you talking to the shell, saying: "Hey, please run this." And the shell replies: "Sure," and then tells the operating system: "Hey, could you create a new process and run this?" And if everything goes well, the operating system complies and your program is executed.
+
+But there is a whole world outside your program, in the shell, with which you can interact from C. We will look at some of those worlds in this chapter.
+
+</details>
+
 ---
 
 
